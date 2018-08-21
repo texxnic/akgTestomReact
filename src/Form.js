@@ -11,6 +11,7 @@
           email: '',
           comment: '',
           formActive: false,
+          sended:false,
           
           
         };
@@ -24,6 +25,15 @@
         // Because we named the inputs to match their corresponding values in state, it's
         // super easy to update the state
         this.setState({ [e.target.name]: e.target.value });
+
+
+        
+        
+        if (e.target.value.length > 0){
+          this.setState({ formActive: true });
+        } else {
+          this.setState({ formActive: false });
+        }
       }
 
       onSubmit = (e) => {
@@ -49,17 +59,26 @@
         .catch(function(error){
           console.log(error);
         });
+        this.setState({ sended: true });
       }
 
       render() {
-        const { fname, lname, email } = this.state;
+        const { name, email, comment } = this.state;
         return (
-          <form onSubmit={this.onSubmit}>
-          <input type="text" name="name" value={fname} onChange={this.onChange} />
-          <input type="text" name="email" value={email} onChange={this.onChange} />
-          <textarea placeholder="Оставить отзыв" className="testomTextArea" spellCheck="true"  type="text" name="comment" value={lname} onChange={this.onChange} />
+          <form className={this.state.sended ? 'testomSended' : ''} onSubmit={this.onSubmit}>
+          <div className={"row testomInfoRow " + (this.state.formActive ? 'testomShow' : 'hidden')}>
+            <div className="col-md-6">
+            <p>Имя и Фамилия</p>
+              <input type="text" name="name" value={name} onChange={this.onChange} />
+            </div>
+            <div className="col-md-6">
+            <p>E-mail</p>
+              <input type="text" name="email" value={email} onChange={this.onChange} />
+            </div>
+          </div>
+          <textarea placeholder="Оставить отзыв" className="testomTextArea" spellCheck="true"  type="text" name="comment" value={comment} onChange={this.onChange} />
           
-          <button type="submit">Submit</button>
+          <button className={"testomBut " + (this.state.formActive ? 'testomButShow' : 'hidden')} type="submit">Отправить отзыв</button>
           </form>
           );
       }
