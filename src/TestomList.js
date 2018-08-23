@@ -34,8 +34,8 @@
             return (
 
                 
-                dataCom.map(function(name, index){
-                    return <div className="testomWrap" key={ index }><h5 className="testomh5">{name.comment}</h5><p className="testomName">{name.name}</p></div>;
+                dataCom.reverse().map(function(name, index){
+                    return <div className="testomWrap" key={ name._id }><h5 className="testomh5">{name.comment}</h5><p className="testomName">{name.name}</p></div>;
                 })
                 
 

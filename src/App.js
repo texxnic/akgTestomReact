@@ -11,6 +11,7 @@ class App extends Component {
 					<Form />
 				</div>
 				<div className="testomsWrap">
+				<h1 className="calc__ghost">Отзывы</h1>
 					<TestomList />
 				</div>
 			</div>

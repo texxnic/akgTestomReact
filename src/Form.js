@@ -3,6 +3,10 @@
 
     import querystring from 'querystring';
 
+
+
+    import  Recaptcha from 'react-google-invisible-recaptcha';
+
     class Form extends Component {
       constructor() {
         super();
@@ -15,6 +19,8 @@
           
           
         };
+        this.onSubmit = this.onSubmit.bind(this);
+        this.textInput = React.createRef();
       }
 
 
@@ -38,6 +44,7 @@
 
       onSubmit = (e) => {
         e.preventDefault();
+        this.recaptcha.execute()
         // get our form data out of state
         const resp = this.state;
         let respDATA = querystring.stringify(resp);
@@ -53,32 +60,38 @@
         .then(function(response){
           console.log(response.data);
           console.log(response.status);
-
-
+          let form = document.querySelector("form");
+          
+          form.classList.add("formSended");
+          
         })
         .catch(function(error){
           console.log(error);
         });
-        this.setState({ sended: true });
+        
       }
 
       render() {
         const { name, email, comment } = this.state;
         return (
-          <form className={this.state.sended ? 'testomSended' : ''} onSubmit={this.onSubmit}>
-          <div className={"row testomInfoRow " + (this.state.formActive ? 'testomShow' : 'hidden')}>
-            <div className="col-md-6">
-            <p>Имя и Фамилия</p>
-              <input type="text" name="name" value={name} onChange={this.onChange} />
-            </div>
-            <div className="col-md-6">
-            <p>E-mail</p>
-              <input type="text" name="email" value={email} onChange={this.onChange} />
-            </div>
+          <form className={(this.state.sended ? 'testomSended ' : '')  + (this.state.formActive ? 'testomShow ' : 'hidden ')} onSubmit={this.onSubmit}>
+          <div className={"row testomInfoRow "}>
+          <div className="col-md-6">
+          <p>Имя и Фамилия</p>
+          <input type="text" maxLength="25" name="name" value={name} onChange={this.onChange} />
           </div>
-          <textarea placeholder="Оставить отзыв" className="testomTextArea" spellCheck="true"  type="text" name="comment" value={comment} onChange={this.onChange} />
+          <div className="col-md-6">
+          <p>E-mail<span className="selectedText">*</span></p>
+          <input type="email" required name="email" value={email} onChange={this.onChange} />
+          </div>
+          </div>
+          <textarea ref={this.textInput} pattern=".{3,}"   required title="Введите пожалуйста отзыв" maxLength="500" placeholder="Оставить отзыв" className="testomTextArea" spellCheck="true"  type="text" name="comment" value={comment} onChange={this.onChange} />
           
-          <button className={"testomBut " + (this.state.formActive ? 'testomButShow' : 'hidden')} type="submit">Отправить отзыв</button>
+          <Recaptcha
+          ref={ ref => this.recaptcha = ref }
+          sitekey={ "6LcVtmsUAAAAAEHXl-jwvJbWqhQqfpiA63yl7bCP" }
+          onResolved={ () => console.log( 'Human detected.' ) } />
+          <button className={"testomBut "} type="submit">Отправить отзыв</button>
           </form>
           );
       }

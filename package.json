@@ -6,6 +6,8 @@
     "axios": "^0.18.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-google-invisible-recaptcha": "^0.2.10",
+    "react-recaptcha": "^2.3.10",
     "react-scripts": "1.1.4"
   },
   "scripts": {
